@@ -12,8 +12,6 @@ object BroadcastJoin {
     val pairRdd2 = sc.textFile(input2)
       .mapPartitionsWithIndex { (idx, iter) => if (idx == 0) iter.drop(1) else iter }
       .map(line => (line.split(",").apply(2), line.split(",").apply(0) + "," + line.split(",").apply(1)))
-    pairRdd.saveAsTextFile(output + "1")
-    pairRdd2.saveAsTextFile(output + "2")
     val broadcasted = sc.broadcast(pairRdd.collect().toMap)
     pairRdd2.flatMap(x => {
       broadcasted.value.get(x._1) match {

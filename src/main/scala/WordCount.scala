@@ -12,8 +12,8 @@ object WordCount {
       .flatMap(line => line.trim().replaceAll("\\pP", "").toLowerCase().split("\\s+"))
       .filter(word => filterPair(word, stopWords))
       .map(word => (word, 1))
-      .reduceByKey(_ + _) // .reduceByKey((x, y) => x + y)
-      .sortBy { case (word, count) => count } // .sortBy(_._2) or .sortBy(pair => pair._2)
+      .reduceByKey(_ + _)
+      .sortBy { case (word, count) => count }
       .map(pair => (pair._2, pair._1))
       .map(pair => mutable.StringBuilder.newBuilder.append(pair._2).append("\u0009").append(pair._1))
       .saveAsTextFile(output)
